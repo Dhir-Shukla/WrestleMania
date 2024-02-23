@@ -1,5 +1,7 @@
 import React from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { FontAwesome6 } from '@expo/vector-icons';
 import { Link, Tabs } from 'expo-router';
 import { Pressable } from 'react-native';
 
@@ -7,12 +9,12 @@ import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
 import { useClientOnlyValue } from '@/components/useClientOnlyValue';
 
-// You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
+
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>['name'];
   color: string;
 }) {
-  return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
+  return <FontAwesome6 size={28} style={{ marginBottom: -3 }} {...props} />;
 }
 
 export default function TabLayout() {
@@ -29,14 +31,14 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: 'Username',
+          tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
           headerRight: () => (
             <Link href="/modal" asChild>
               <Pressable>
                 {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
+                  <FontAwesome6
+                    name="gear"
                     size={25}
                     color={Colors[colorScheme ?? 'light'].text}
                     style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
@@ -45,13 +47,19 @@ export default function TabLayout() {
               </Pressable>
             </Link>
           ),
+          headerLeft: () => (
+            <View style={{backgroundColor: "#fff"}}>
+              <Text>Here I am</Text>
+              <TouchableOpacity />
+            </View>
+          )
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="startFightTab"
         options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: 'Start a Fight',
+          tabBarIcon: ({ color }) => <TabBarIcon name="hand-fist" color={color} />,
         }}
       />
     </Tabs>
