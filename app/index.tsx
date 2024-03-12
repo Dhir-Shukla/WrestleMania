@@ -6,8 +6,19 @@ import SettingsButton from '@/components/SettingsButton';
 import { FontAwesome6 } from '@expo/vector-icons';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { StyleSheet, Text, TouchableOpacity, View, Image, TextInput } from 'react-native';
+import { useState } from 'react';
+import { router } from 'expo-router';
 
 export default function HomeScreen() {
+
+    const characterImgs = [
+        require('@/assets/images/fighter_default.png'),
+        require('@/assets/images/fighter_chunky.png'),
+        require('@/assets/images/fighter_female.png'),
+        require('@/assets/images/fighter_ninja.png')
+    ];
+    
+    const [location, setLocation] = useState('');
 
     const friendsButtonPressed = () => {
         console.warn('Friends Pressed')
@@ -17,10 +28,17 @@ export default function HomeScreen() {
         console.warn('Fight Club Pressed')
     };
 
-    const settingsButtonPressed = () => {
-        console.warn('Settings Pressed')
+    function settingsButtonPressed(): void {
+        router.navigate('settings')
     };
 
+    function joinButtonPressed(): void {
+        console.warn('Joining', location)
+    };
+
+    function startFightButtonPressed(): void {
+        console.warn('Start Fight Button Pressed')
+    }
 
     return (
         <View style={styles.screen}>
@@ -39,7 +57,7 @@ export default function HomeScreen() {
                 <View style={styles.imageContainer}>
                     <Text style={styles.username}>{UserInfo.UserName}</Text> 
                     <Image 
-                        source={require('@/assets/images/fighter_ryu.png')}
+                        source={characterImgs[UserInfo.characterChoice]}
                         style={styles.image}>
                     </Image>
                 </View>
@@ -52,16 +70,17 @@ export default function HomeScreen() {
                 
                 <TextInput 
                     style={styles.textInput}
-                    placeholder='  Enter fight location...'
+                    placeholder='Fight location...'
                     placeholderTextColor='gray'
-                />
+                    onChangeText={(text)=>setLocation(text)}
+                /> 
 
-                <TouchableOpacity style={styles.joinButton}>
-                    <Text style={styles.bottomButtonText}>Go    Location</Text>
-                    <FontAwesome6 name='person-walking-arrow-right' size={20} color={UserInfo.secondaryColor} style={styles.bottomButtonIcon}/>
+                <TouchableOpacity style={styles.joinButton} onPress={joinButtonPressed}>
+                    <Text style={styles.bottomButtonText}>Join</Text>
+                    <FontAwesome6 name='person-walking-arrow-right' size={20} color={'white'} style={styles.bottomButtonIcon}/>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.startFightButton}>
+                <TouchableOpacity style={styles.startFightButton} onPress={startFightButtonPressed}>
                     <Text style={styles.bottomButtonText}>Start  Fight</Text>
                     <FontAwesome6 name='pencil' size={20} color={UserInfo.secondaryColor} style={styles.bottomButtonIcon}/>
                 </TouchableOpacity>
@@ -111,7 +130,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         top: 25
     },
-    username: {
+    username: {                                         // TODO: Adjust username tag color to white if background is dark
         fontSize: 30,
         fontFamily: 'ARCADECLASSIC',
         shadowOpacity: 0.1
@@ -136,18 +155,19 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.5
     },
     textInput: {
-        top: 100,
+        top: 120,
         width: '60%',
         alignSelf: 'center',
+        textAlign: 'center',
         height: 40,
         borderRadius: 10,
         backgroundColor: 'white',
-        color: 'grey'
+        color: 'black'
     },
     joinButton: {
-        top: 120,
-        backgroundColor: UserInfo.thirdColor,
-        width: '80%',
+        top: 140,
+        backgroundColor: '#64c564',
+        width: '30%',
         height: 40,
         alignSelf: 'center',
         justifyContent: 'center',
@@ -157,17 +177,15 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 2 },
         elevation: 2,
         borderRadius: 10
-
-
     },
     bottomButtonText: {
-        color: UserInfo.secondaryColor,
+        color: 'white',
         fontSize: 20,
         fontFamily: 'ARCADECLASSIC'
     },
     startFightButton: {
-        top: 180,
-        backgroundColor: UserInfo.thirdColor,
+        top: 200,
+        backgroundColor: UserInfo.thirdColor,   //Light Blue:'#a9d3f7' //Light red:'#ff4b4b' //Light Purple:'#ebd5f7' //Light Green:'#e1f7d5'
         width: '60%',
         height: 40,
         alignSelf: 'center',
