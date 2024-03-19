@@ -1,28 +1,41 @@
-import { Stack, router } from 'expo-router';
-import { useState, useMemo } from 'react';
-import { View, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native'
+import { FontAwesome6 } from '@expo/vector-icons';
+import { router } from 'expo-router';
+import { useMemo, useState } from 'react';
+import {View, StyleSheet, Text, TextInput, TouchableOpacity} from 'react-native';
 
-export default function index() {
+export default function signUpScreen(){
+
     const[username, setUsername] = useState('');
     const[password, setPassword] = useState('');
 
     const screenColor = useMemo(getScreenColor, []);
 
     function getScreenColor(): string {
-        var colorList: string[] = ['#fa7a70', '#ebd5f7', '#e1f7d5', '#a9d3f7', '#a566e0'];     // TODO: Set this to retrieve all colors from firebase
+        var colorList: string[] = ['#a566e0'];     // TODO: Set this to retrieve all colors from firebase
         const hashedIndex = Math.floor(Math.random() * colorList.length)
         return colorList[hashedIndex];
     }
+    
+    function backToLoginScreen(): void {
+        router.back();
+    }
 
-    function signUpPressed(): void {
-        router.navigate('signUpScreen');
+    function handleCreateAccount(): void {
+        throw new Error('Function not implemented.');
     }
 
     return (
         <View style = {[styles.container, {backgroundColor: screenColor}]}>
-            <Text style={styles.titleTxt}>Login</Text>
+            <Text style={styles.titleTxt}>Sign Up</Text>
             <View style={styles.inputContainer}>
                 <Text style={styles.inputTitleTxt}>Email:</Text>
+                <TextInput
+                    style={styles.inputBox}
+                    onChangeText={(text) => setUsername(text)}
+                />
+            </View>
+            <View style={styles.inputContainer}>
+                <Text style={styles.inputTitleTxt}>Username:</Text>
                 <TextInput
                     style={styles.inputBox}
                     onChangeText={(text) => setUsername(text)}
@@ -36,14 +49,17 @@ export default function index() {
                     secureTextEntry
                 />
             </View>
-            <TouchableOpacity style={styles.loginBtn}>
-                <Text style={styles.loginBtnTxt}>Login</Text>
+            <TouchableOpacity 
+            style={styles.createAccountBtn}
+            onPress={() => handleCreateAccount()}>
+                <Text style={styles.createAccountBtnTxt}>Create Account</Text>
             </TouchableOpacity>
             <TouchableOpacity 
-            style={styles.signUpBtn}
-            onPress={() => signUpPressed()}>
-                <Text style={styles.signUpTxt}>
-                    Sign up
+            style={styles.backToLoginBtn}
+            onPress={() => backToLoginScreen()}>
+                <FontAwesome6 name="arrow-left" size={15} color="white" />
+                <Text style={styles.backToLoginTxt}>
+                   Back to Login
                 </Text>
             </TouchableOpacity>
         </View>
@@ -56,7 +72,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     titleTxt: {
-        marginTop: 200,
+        marginTop: 130,
         paddingBottom: 20,
         color: 'white',
         fontSize: 40,
@@ -78,23 +94,23 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         paddingLeft: 15
     },
-    loginBtn: {
-        marginTop: 35,
-        width: 100,
+    createAccountBtn: {
+        marginTop: 50,
+        width: 150,
         height: 30,
         borderRadius: 10,
-        shadowOpacity: 0.2,
+        shadowOpacity: 0.3,
         shadowOffset: { width: 0, height: 2 },
         elevation: 2, 
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'white',
+        backgroundColor: '#64c564',
     },
-    loginBtnTxt: {
+    createAccountBtnTxt: {
         fontFamily: 'Organo', 
-        color: 'grey'
+        color: 'white'
     },
-    signUpBtn: {
+    backToLoginBtn: {
         marginTop: 70,
         width: 150,
         height: 30,
@@ -103,10 +119,11 @@ const styles = StyleSheet.create({
         //shadowOffset: { width: 0, height: 2 },
         elevation: 2, 
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'space-evenly',
+        flexDirection: 'row'
         //backgroundColor: 'white',
     },
-    signUpTxt: {
+    backToLoginTxt: {
         fontFamily: 'Organo',
         color: 'white',
     }

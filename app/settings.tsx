@@ -3,7 +3,7 @@ import LockedCharacter from '@/components/LockedCharacter';
 import { FontAwesome6 } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { Platform, StyleSheet, View, Text, Image, Button, Pressable, TouchableOpacity, ScrollView } from 'react-native';
+import { Platform, StyleSheet, View, Text, Image, Pressable, TouchableOpacity, ScrollView } from 'react-native';
 import { router } from 'expo-router'
 
 export default function SettingsScreen() {
