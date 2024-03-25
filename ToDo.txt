@@ -1,0 +1,11 @@
+Things to do:
+
+
+Audio
+    Add audio which plays in the background
+    It should continue the song even when screen changes (home -> settings)
+    Disable audio feature in settings
+
+Leaderboard
+    A popup that shows top players worldwide
+    Users can sort the leaderboard by Wins, KO (maybe weekly/monthly as well) 

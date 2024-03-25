@@ -2,9 +2,12 @@ import { FontAwesome6 } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
 import {View, StyleSheet, Text, TextInput, TouchableOpacity} from 'react-native';
+import { authService, db, usersColRef } from '@/backend/firebaseConfig';
+import { doc, setDoc } from 'firebase/firestore';
 
-export default function signUpScreen(){
+const signUpScreen = () => {
 
+    const[email, setEmail] = useState('');
     const[username, setUsername] = useState('');
     const[password, setPassword] = useState('');
 
@@ -21,7 +24,29 @@ export default function signUpScreen(){
     }
 
     function handleCreateAccount(): void {
-        throw new Error('Function not implemented.');
+        // Create account in firebase authentication
+        authService
+            .createUserWithEmailAndPassword(email, password)
+            .then((userCredentials: any) => {
+                const user = userCredentials.user;
+                console.warn('Account created with email', user.email);
+
+                // Create user with their info in firestore db
+                setDoc(doc(db, "users", username), {
+                    username: username,
+                    password: password,
+                    email: email,
+                    color: '#fa7a70',
+                    wins: 0,
+                    loss: 0,
+                    ko: 0
+                })
+            })
+            .catch((error: any) => {
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                console.warn('Recieved error code', errorCode, ':', errorMessage)
+            })            
     }
 
     return (
@@ -31,7 +56,7 @@ export default function signUpScreen(){
                 <Text style={styles.inputTitleTxt}>Email:</Text>
                 <TextInput
                     style={styles.inputBox}
-                    onChangeText={(text) => setUsername(text)}
+                    onChangeText={(text) => setEmail(text)}
                 />
             </View>
             <View style={styles.inputContainer}>
@@ -128,3 +153,5 @@ const styles = StyleSheet.create({
         color: 'white',
     }
 })
+
+export default signUpScreen;

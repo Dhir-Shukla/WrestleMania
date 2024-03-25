@@ -40,7 +40,7 @@ const LockedCharacter : React.FC<LockedCharacterProps> = ({ howToUnlock }) => {
                         style={styles.button}
                         onPress={() => setModalVisible(!modalVisible)}
                     >
-                    <Text style={styles.textStyle}>Close</Text>
+                        <Text style={styles.textStyle}>Close</Text>
                     </Pressable>
                 </View>
             </Modal> 

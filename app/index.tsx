@@ -18,6 +18,10 @@ export default function index() {
         router.navigate('signUpScreen');
     }
 
+    function handleLogin(): void {
+        throw new Error('Function not implemented.');
+    }
+
     return (
         <View style = {[styles.container, {backgroundColor: screenColor}]}>
             <Text style={styles.titleTxt}>Login</Text>
@@ -36,7 +40,9 @@ export default function index() {
                     secureTextEntry
                 />
             </View>
-            <TouchableOpacity style={styles.loginBtn}>
+            <TouchableOpacity 
+            style={styles.loginBtn}
+            onPress={() => handleLogin()}>
                 <Text style={styles.loginBtnTxt}>Login</Text>
             </TouchableOpacity>
             <TouchableOpacity 
