@@ -1,6 +1,12 @@
 Things to do:
 
+Login screen UI fix
+    Prevent users from swiping right and exiting the login screen
+    Adjust the input keyboard by making it scroll or something of that sort
 
+Animation on index.tsx
+    index screen should have animation for the "D-MOBB Gaming" text
+    
 Audio
     Add audio which plays in the background
     It should continue the song even when screen changes (home -> settings)
