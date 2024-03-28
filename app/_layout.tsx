@@ -52,7 +52,7 @@ function RootLayoutNav() {
   return (
     <Stack>
         <Stack.Screen name='index' options={{ headerShown: false}} />
-        <Stack.Screen name='loginScreen' options={{ headerShown: false, animation: 'fade', animationDuration: 200}} />
+        <Stack.Screen name='loginScreen' options={{ headerShown: false, animation: 'fade', animationDuration: 500}} />
         <Stack.Screen name='signUpScreen' options={{ headerShown: false, presentation: 'modal', animation: 'slide_from_bottom' }} />
         <Stack.Screen name="homeScreen" options={{ headerShown: false }} />
         <Stack.Screen name="settings" options={{ headerShown: false, presentation: 'modal', animation: 'slide_from_bottom' }} />
