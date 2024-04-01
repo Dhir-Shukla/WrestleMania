@@ -1,15 +1,18 @@
 import { FontAwesome6 } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import { useMemo, useState } from 'react';
+import InvalidSignUpModal from '@/components/InvalidSignUpModal';
 import {View, StyleSheet, Text, TextInput, TouchableOpacity} from 'react-native';
-import { authService, db, usersColRef } from '@/backend/firebaseConfig';
+import { authService, db } from '@/backend/firebaseConfig';
 import { doc, setDoc } from 'firebase/firestore';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { useState, useMemo } from 'react';
 
 const signUpScreen = () => {
 
     const[email, setEmail] = useState('');
     const[username, setUsername] = useState('');
     const[password, setPassword] = useState('');
+    const[shouldInvalidSignUpModalDisplay, setShouldInvalidSignUpModalDisplay] = useState(false);
 
     const screenColor = useMemo(getScreenColor, []);
 
@@ -25,9 +28,8 @@ const signUpScreen = () => {
 
     function handleCreateAccount(): void {
         // Create account in firebase authentication
-        authService
-            .createUserWithEmailAndPassword(email, password)
-            .then((userCredentials: any) => {
+        createUserWithEmailAndPassword(authService, email, password)
+            .then((userCredentials) => {
                 const user = userCredentials.user;
                 console.warn('Account created with email', user.email);
 
@@ -42,10 +44,28 @@ const signUpScreen = () => {
                     ko: 0
                 })
             })
-            .catch((error: any) => {
+            .catch((error) => {
                 var errorCode = error.code;
                 var errorMessage = error.message;
-                console.warn('Recieved error code', errorCode, ':', errorMessage)
+                switch (errorCode) {
+                    case 'auth/invalid-email':
+                        setShouldInvalidSignUpModalDisplay(true);
+                        console.warn('Invalid email')
+                        break;
+                    case 'auth/missing-password':
+                        setShouldInvalidSignUpModalDisplay(true);
+                        console.warn('Invalid Password')
+                        break;
+                    case 'auth/weak-password':
+                        setShouldInvalidSignUpModalDisplay(true);
+                        console.warn('Weak Password, 6 characters requried')
+                        break;
+                    default:
+                        console.warn('Error code:', errorCode),
+                        console.warn('Error type:', typeof(errorCode)),
+                        console.warn('Error message:', errorMessage)
+                        break;
+                }                
             })            
     }
 
@@ -87,6 +107,7 @@ const signUpScreen = () => {
                    Back to Login
                 </Text>
             </TouchableOpacity>
+            <InvalidSignUpModal shouldDisplay={shouldInvalidSignUpModalDisplay}/>
         </View>
     )
 }
