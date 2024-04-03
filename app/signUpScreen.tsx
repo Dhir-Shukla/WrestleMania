@@ -29,12 +29,12 @@ const signUpScreen = () => {
     function handleCreateAccount(): void {
         // Create account in firebase authentication
         createUserWithEmailAndPassword(authService, email, password)
-            .then((userCredentials) => {
+            .then(async (userCredentials) => {
                 const user = userCredentials.user;
                 console.warn('Account created with email', user.email);
 
                 // Create user with their info in firestore db
-                setDoc(doc(db, "users", username), {
+                await setDoc(doc(db, "users", username), {
                     username: username,
                     password: password,
                     email: email,
@@ -42,7 +42,11 @@ const signUpScreen = () => {
                     wins: 0,
                     loss: 0,
                     ko: 0
-                })
+                }).then(() => {
+                        console.warn('Document successfully written to firestore')
+                }).catch((error) => {
+                        console.warn('Error', error.code, ':', error.message)
+                    })
             })
             .catch((error) => {
                 var errorCode = error.code;
