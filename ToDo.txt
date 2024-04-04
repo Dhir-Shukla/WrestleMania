@@ -1,10 +1,6 @@
 Things to do:
 
 Sign Up authentication:
-    Have conditions before utilizing authService, that verify user entry, such as:
-        Email length
-        Password length (6)
-        Username length
     Verify that username does not already exist in database
     Catch the error where an email already exists
     View other errors from firebase documentation to see if any other ones are requried.

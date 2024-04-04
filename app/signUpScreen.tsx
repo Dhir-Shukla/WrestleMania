@@ -17,7 +17,7 @@ const signUpScreen = () => {
     const screenColor = useMemo(getScreenColor, []);
 
     function getScreenColor(): string {
-        var colorList: string[] = ['#a566e0'];     // TODO: Set this to retrieve all colors from firebase
+        var colorList: string[] = ['#a566e0'];                              // TODO: Set this to retrieve all colors from firebase
         const hashedIndex = Math.floor(Math.random() * colorList.length)
         return colorList[hashedIndex];
     }
@@ -27,8 +27,21 @@ const signUpScreen = () => {
     }
 
     function handleCreateAccount(): void {
-        // Create account in firebase authentication
-        createUserWithEmailAndPassword(authService, email, password)
+        if (email.length == 0){
+            console.warn('Please enter an email');
+        }
+        else if (username.length < 3){
+            console.warn('Username must be at least 3 characters long');
+        }
+        else if (password.length < 6){
+            console.warn('Password must be at least 6 characters long');
+        }
+        else if (false){                                                      // TODO: Create case where username already exists in database
+            console.warn('This username already exists')
+        }  
+        else{
+            // Create account in firebase authentication
+            createUserWithEmailAndPassword(authService, email, password)
             .then(async (userCredentials) => {
                 const user = userCredentials.user;
                 console.warn('Account created with email', user.email);
@@ -70,7 +83,8 @@ const signUpScreen = () => {
                         console.warn('Error message:', errorMessage)
                         break;
                 }                
-            })            
+            })     
+        }       
     }
 
     return (
