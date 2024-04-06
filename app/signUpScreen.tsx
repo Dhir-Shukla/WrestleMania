@@ -1,7 +1,7 @@
 import { FontAwesome6 } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import InvalidSignUpModal from '@/components/InvalidSignUpModal';
-import {View, StyleSheet, Text, TextInput, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, Text, TextInput, TouchableOpacity, Modal} from 'react-native';
 import { authService, db } from '@/backend/firebaseConfig';
 import { doc, setDoc } from 'firebase/firestore';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -13,6 +13,8 @@ const signUpScreen = () => {
     const[username, setUsername] = useState('');
     const[password, setPassword] = useState('');
     const[shouldInvalidSignUpModalDisplay, setShouldInvalidSignUpModalDisplay] = useState(false);
+    const[errorTxt, setErrorTxt] = useState('');
+    
 
     const screenColor = useMemo(getScreenColor, []);
 
@@ -28,16 +30,16 @@ const signUpScreen = () => {
 
     function handleCreateAccount(): void {
         if (email.length == 0){
-            console.warn('Please enter an email');
+            setErrorTxt('Please enter an email');
         }
         else if (username.length < 3){
-            console.warn('Username must be at least 3 characters long');
+            setErrorTxt('Username must be at least 3 characters long');
         }
         else if (password.length < 6){
-            console.warn('Password must be at least 6 characters long');
+            setErrorTxt('Password must be at least 6 characters long');
         }
         else if (false){                                                      // TODO: Create case where username already exists in database
-            console.warn('This username already exists')
+            setErrorTxt('This username already exists')
         }  
         else{
             // Create account in firebase authentication
@@ -57,34 +59,34 @@ const signUpScreen = () => {
                     ko: 0
                 }).then(() => {
                         console.warn('Document successfully written to firestore')
+                        return;
                 }).catch((error) => {
-                        console.warn('Error', error.code, ':', error.message)
+                        setErrorTxt('Error '+ error.code + ' : ' + error.message);
                     })
             })
             .catch((error) => {
                 var errorCode = error.code;
-                var errorMessage = error.message;
                 switch (errorCode) {
                     case 'auth/invalid-email':
-                        setShouldInvalidSignUpModalDisplay(true);
-                        console.warn('Invalid email')
+                        setErrorTxt('Invalid email');
                         break;
                     case 'auth/missing-password':
-                        setShouldInvalidSignUpModalDisplay(true);
-                        console.warn('Invalid Password')
+                        setErrorTxt('Invalid Password');
                         break;
                     case 'auth/weak-password':
-                        setShouldInvalidSignUpModalDisplay(true);
-                        console.warn('Weak Password, 6 characters requried')
+                        setErrorTxt('Weak Password, 6 characters requried');
                         break;
                     default:
-                        console.warn('Error code:', errorCode),
-                        console.warn('Error type:', typeof(errorCode)),
-                        console.warn('Error message:', errorMessage)
+                        setErrorTxt('Error '+ errorCode + ' : ' + error.message);
                         break;
                 }                
-            })     
-        }       
+            })
+        }
+        console.warn('we reached here')
+        setShouldInvalidSignUpModalDisplay(true);
+            setTimeout(() => {
+                setShouldInvalidSignUpModalDisplay(false);
+            }, 3000);       
     }
 
     return (
@@ -125,7 +127,9 @@ const signUpScreen = () => {
                    Back to Login
                 </Text>
             </TouchableOpacity>
-            <InvalidSignUpModal shouldDisplay={shouldInvalidSignUpModalDisplay}/>
+            {shouldInvalidSignUpModalDisplay && 
+                    <InvalidSignUpModal errorTxt={errorTxt}/>
+            }
         </View>
     )
 }
@@ -156,7 +160,8 @@ const styles = StyleSheet.create({
         height: 40,
         borderRadius: 20,
         backgroundColor: 'white',
-        paddingLeft: 15
+        paddingLeft: 15,
+        zIndex: 2
     },
     createAccountBtn: {
         marginTop: 50,
