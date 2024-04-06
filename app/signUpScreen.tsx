@@ -28,18 +28,26 @@ const signUpScreen = () => {
         router.back();
     }
 
+    function displayInvalidSignUpModal(errorTxt: string){
+        setErrorTxt(errorTxt);
+        setShouldInvalidSignUpModalDisplay(true);
+        setTimeout(() => {
+            setShouldInvalidSignUpModalDisplay(false);
+        }, 3000);  
+    }
+
     function handleCreateAccount(): void {
         if (email.length == 0){
-            setErrorTxt('Please enter an email');
+            displayInvalidSignUpModal('Please enter an email');  
         }
         else if (username.length < 3){
-            setErrorTxt('Username must be at least 3 characters long');
+            displayInvalidSignUpModal('Username must be at least 3 characters long');
         }
         else if (password.length < 6){
-            setErrorTxt('Password must be at least 6 characters long');
+            displayInvalidSignUpModal('Password must be at least 6 characters long');
         }
         else if (false){                                                      // TODO: Create case where username already exists in database
-            setErrorTxt('This username already exists')
+            displayInvalidSignUpModal('This username already exists')
         }  
         else{
             // Create account in firebase authentication
@@ -59,34 +67,28 @@ const signUpScreen = () => {
                     ko: 0
                 }).then(() => {
                         console.warn('Document successfully written to firestore')
-                        return;
                 }).catch((error) => {
-                        setErrorTxt('Error '+ error.code + ' : ' + error.message);
+                    displayInvalidSignUpModal('Error '+ error.code + ' : ' + error.message);
                     })
             })
             .catch((error) => {
                 var errorCode = error.code;
                 switch (errorCode) {
                     case 'auth/invalid-email':
-                        setErrorTxt('Invalid email');
+                        displayInvalidSignUpModal('Invalid email');
                         break;
                     case 'auth/missing-password':
-                        setErrorTxt('Invalid Password');
+                        displayInvalidSignUpModal('Invalid Password');
                         break;
                     case 'auth/weak-password':
-                        setErrorTxt('Weak Password, 6 characters requried');
+                        displayInvalidSignUpModal('Weak Password, 6 characters requried');
                         break;
                     default:
-                        setErrorTxt('Error '+ errorCode + ' : ' + error.message);
+                        displayInvalidSignUpModal('Error '+ errorCode + ' : ' + error.message);
                         break;
                 }                
             })
-        }
-        console.warn('we reached here')
-        setShouldInvalidSignUpModalDisplay(true);
-            setTimeout(() => {
-                setShouldInvalidSignUpModalDisplay(false);
-            }, 3000);       
+        }  
     }
 
     return (
