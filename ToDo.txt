@@ -20,3 +20,6 @@ Audio
 Leaderboard
     A popup that shows top players worldwide
     Users can sort the leaderboard by Wins, KO (maybe weekly/monthly as well) 
+
+Firebase Security
+    Create security rules for firebase using condition

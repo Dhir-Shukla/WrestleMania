@@ -6,6 +6,7 @@ import { authService, db } from '@/backend/firebaseConfig';
 import { doc, setDoc } from 'firebase/firestore';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { useState, useMemo } from 'react';
+import SuccessfulSignUpModal from '@/components/SuccessfulSignUpModal';
 
 const signUpScreen = () => {
 
@@ -13,6 +14,7 @@ const signUpScreen = () => {
     const[username, setUsername] = useState('');
     const[password, setPassword] = useState('');
     const[shouldInvalidSignUpModalDisplay, setShouldInvalidSignUpModalDisplay] = useState(false);
+    const[shouldSuccessfulModalDisplay, setShouldSuccessfulModalDisplay] = useState(false);
     const[errorTxt, setErrorTxt] = useState('');
     
 
@@ -116,6 +118,7 @@ const signUpScreen = () => {
                     secureTextEntry
                 />
             </View>
+
             <TouchableOpacity 
             style={styles.createAccountBtn}
             onPress={() => handleCreateAccount()}>
@@ -129,9 +132,12 @@ const signUpScreen = () => {
                    Back to Login
                 </Text>
             </TouchableOpacity>
+
             {shouldInvalidSignUpModalDisplay && 
                     <InvalidSignUpModal errorTxt={errorTxt}/>
             }
+
+                    <SuccessfulSignUpModal username={username} email={email} />
         </View>
     )
 }
