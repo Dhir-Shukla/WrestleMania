@@ -5,26 +5,19 @@ import {View, StyleSheet, Text, TextInput, TouchableOpacity, Modal} from 'react-
 import { authService, db } from '@/backend/firebaseConfig';
 import { doc, setDoc } from 'firebase/firestore';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import SuccessfulSignUpModal from '@/components/SuccessfulSignUpModal';
+import user from '@/User';
+import { UserService } from '@/backend/services/UserService';
 
 const signUpScreen = () => {
-
+    const userService = new UserService();
     const[email, setEmail] = useState('');
     const[username, setUsername] = useState('');
     const[password, setPassword] = useState('');
     const[shouldInvalidSignUpModalDisplay, setShouldInvalidSignUpModalDisplay] = useState(false);
     const[shouldSuccessfulModalDisplay, setShouldSuccessfulModalDisplay] = useState(false);
     const[errorTxt, setErrorTxt] = useState('');
-    
-
-    const screenColor = useMemo(getScreenColor, []);
-
-    function getScreenColor(): string {
-        var colorList: string[] = ['#a566e0'];                              // TODO: Set this to retrieve all colors from firebase
-        const hashedIndex = Math.floor(Math.random() * colorList.length)
-        return colorList[hashedIndex];
-    }
     
     function backToLoginScreen(): void {
         router.back();
@@ -52,49 +45,20 @@ const signUpScreen = () => {
             displayInvalidSignUpModal('This username already exists')
         }  
         else{
-            // Create account in firebase authentication
-            createUserWithEmailAndPassword(authService, email, password)
-            .then(async (userCredentials) => {
-                const user = userCredentials.user;
-                console.warn('Account created with email', user.email);
-
-                // Create user with their info in firestore db
-                await setDoc(doc(db, "users", username), {
-                    username: username,
-                    password: password,
-                    email: email,
-                    color: '#fa7a70',
-                    wins: 0,
-                    loss: 0,
-                    ko: 0
-                }).then(() => {
-                        console.warn('Document successfully written to firestore')
-                }).catch((error) => {
-                    displayInvalidSignUpModal('Error '+ error.code + ' : ' + error.message);
-                    })
-            })
-            .catch((error) => {
-                var errorCode = error.code;
-                switch (errorCode) {
-                    case 'auth/invalid-email':
-                        displayInvalidSignUpModal('Invalid email');
-                        break;
-                    case 'auth/missing-password':
-                        displayInvalidSignUpModal('Invalid Password');
-                        break;
-                    case 'auth/weak-password':
-                        displayInvalidSignUpModal('Weak Password, 6 characters requried');
-                        break;
-                    default:
-                        displayInvalidSignUpModal('Error '+ errorCode + ' : ' + error.message);
-                        break;
-                }                
-            })
+            userService.createAccount(username, email, password)
+                .then((errorMsg) => {
+                    if (errorMsg){
+                        displayInvalidSignUpModal(errorMsg!);
+                    }
+                    else{
+                        setShouldSuccessfulModalDisplay(true);
+                    }
+                })
         }  
     }
 
     return (
-        <View style = {[styles.container, {backgroundColor: screenColor}]}>
+        <View style = {[styles.container, {backgroundColor: user.primaryColor}]}>
             <Text style={styles.titleTxt}>Sign Up</Text>
             <View style={styles.inputContainer}>
                 <Text style={styles.inputTitleTxt}>Email:</Text>
@@ -134,10 +98,13 @@ const signUpScreen = () => {
             </TouchableOpacity>
 
             {shouldInvalidSignUpModalDisplay && 
-                    <InvalidSignUpModal errorTxt={errorTxt}/>
+                <InvalidSignUpModal errorTxt={errorTxt}/>
             }
 
-                    <SuccessfulSignUpModal username={username} email={email} />
+            {shouldSuccessfulModalDisplay && 
+                <SuccessfulSignUpModal username={username} email={email} password={password}/>
+            }   
+
         </View>
     )
 }

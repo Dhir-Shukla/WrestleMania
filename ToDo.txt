@@ -5,6 +5,11 @@ Sign Up authentication:
     Catch the error where an email already exists
     View other errors from firebase documentation to see if any other ones are requried.
 
+Login authentication:
+    Automatically set the authentication credentials once the user signs up
+    Create the login authentication in UserService
+    Implement a way to ensure user stays logged in when app reloads
+
 Login screen UI fix
     Prevent users from swiping right and exiting the login screen
     Adjust the input keyboard by making it scroll or something of that sort
