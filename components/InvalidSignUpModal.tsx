@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { Animated, Easing, Modal, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import { Animated, Easing, StyleSheet, Text} from "react-native";
 
 type InvalidSignUpModalProps = {
     errorTxt: string
@@ -82,6 +82,7 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     txt:{
-        color: 'white'
+        color: 'white',
+        fontFamily: 'Organo'
     }
 })

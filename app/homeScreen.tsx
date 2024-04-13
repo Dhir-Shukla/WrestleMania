@@ -1,11 +1,11 @@
 
-import UserInfo from '@/UserInfo'
+import user from '@/User'
 import FightClubButton from '@/components/FightClubButton';
 import FriendsButton from '@/components/FriendsButton';
 import SettingsButton from '@/components/SettingsButton';
 import { FontAwesome6 } from '@expo/vector-icons';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { StyleSheet, Text, TouchableOpacity, View, Image, TextInput, Button } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Image, TextInput } from 'react-native';
 import { useState } from 'react';
 import { router } from 'expo-router';
 
@@ -55,17 +55,17 @@ export default function HomeScreen() {
                 </TouchableOpacity>
 
                 <View style={styles.imageContainer}>
-                    <Text style={styles.username}>{UserInfo.UserName}</Text> 
+                    <Text style={styles.username}>{user.username}</Text> 
                     <Image 
-                        source={characterImgs[UserInfo.characterChoice]}
+                        source={characterImgs[user.characterChoice]}
                         style={styles.image}>
                     </Image>
                 </View>
 
                 <View style={styles.statsContainer}>
-                    <Text style={styles.statsText}>Wins:  {UserInfo.Wins}</Text>
-                    <Text style={styles.statsText}>Loss:  {UserInfo.Losses}</Text>
-                    <Text style={styles.statsText}>K/O:  {UserInfo.KO}</Text>
+                    <Text style={styles.statsText}>Wins:  {user.wins}</Text>
+                    <Text style={styles.statsText}>Loss:  {user.losses}</Text>
+                    <Text style={styles.statsText}>K/O:  {user.ko}</Text>
                 </View>
                 
                 <TextInput 
@@ -82,7 +82,7 @@ export default function HomeScreen() {
 
                 <TouchableOpacity style={styles.startFightButton} onPress={startFightButtonPressed}>
                     <Text style={styles.bottomButtonText}>Start  Fight</Text>
-                    <FontAwesome6 name='pencil' size={20} color={UserInfo.secondaryColor} style={styles.bottomButtonIcon}/>
+                    <FontAwesome6 name='pencil' size={20} color={user.secondaryColor} style={styles.bottomButtonIcon}/>
                 </TouchableOpacity>
             </KeyboardAwareScrollView>
         </View>
@@ -91,11 +91,11 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
     screen: {
-        backgroundColor: UserInfo.primaryColor,
+        backgroundColor: user.primaryColor,
         flex: 1
     },
     topButton: {
-        backgroundColor: UserInfo.thirdColor,
+        backgroundColor: user.thirdColor,
         width: 60,
         height:60,
         borderRadius: 30,
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     settings: {
         position: 'absolute',
         flexDirection: 'row-reverse',
-        backgroundColor: UserInfo.thirdColor,
+        backgroundColor: user.thirdColor,
         width: 50,
         height:50,
         borderRadius: 25,
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly'
     },
     statsText: {
-        color: UserInfo.secondaryColor,
+        color: user.secondaryColor,
         fontSize: 25,
         fontFamily: 'ARCADECLASSIC',
         shadowOpacity: 0.5
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     },
     startFightButton: {
         top: 200,
-        backgroundColor: UserInfo.thirdColor,   //Light Blue:'#a9d3f7' //Light red:'#ff4b4b' //Light Purple:'#ebd5f7' //Light Green:'#e1f7d5'
+        backgroundColor: user.thirdColor,   //Light Blue:'#a9d3f7' //Light red:'#ff4b4b' //Light Purple:'#ebd5f7' //Light Green:'#e1f7d5'
         width: '60%',
         height: 40,
         alignSelf: 'center',

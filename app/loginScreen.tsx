@@ -1,15 +1,16 @@
 import { Stack, router } from 'expo-router';
 import { useState, useMemo } from 'react';
 import { View, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native'
+import user from '@/User';
 
 export default function loginScreen() {
     const[username, setUsername] = useState('');
     const[password, setPassword] = useState('');
 
-    const screenColor = useMemo(getScreenColor, []);
+    user.primaryColor = useMemo(getScreenColor, []);
 
     function getScreenColor(): string {
-        var colorList: string[] = ['#fa7a70', '#ebd5f7', '#e1f7d5', '#a9d3f7', '#a566e0'];     // TODO: Set this to retrieve all colors from firebase
+        var colorList: string[] = ['#fa7a70', '#ebd5f7', '#e1f7d5', '#a9d3f7', '#a566e0'];     // TODO: Set this to retrieve all colors from a Model
         const hashedIndex = Math.floor(Math.random() * colorList.length)
         return colorList[hashedIndex];
     }
@@ -23,7 +24,7 @@ export default function loginScreen() {
     }
 
     return (
-        <View style = {[styles.container, {backgroundColor: screenColor}]}>
+        <View style = {[styles.container, {backgroundColor: user.primaryColor}]}>
             <Text style={styles.titleTxt}>Login</Text>
             <View style={styles.inputContainer}>
                 <Text style={styles.inputTitleTxt}>Email:</Text>

@@ -1,4 +1,4 @@
-import UserInfo from '@/UserInfo';
+import user from '@/User';
 import LockedCharacter from '@/components/LockedCharacter';
 import { FontAwesome6 } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
@@ -15,10 +15,10 @@ export default function SettingsScreen() {
       require('@/assets/images/fighter_ninja_face.png'),
     ];
 
-    const [displayItemColor, setDisplayItemColor] = useState(UserInfo.primaryColor);
-    const [displayItemImg, setDisplayItemImg] = useState(UserInfo.characterChoice);
+    const [displayItemColor, setDisplayItemColor] = useState(user.primaryColor);
+    const [displayItemImg, setDisplayItemImg] = useState(user.characterChoice);
     const [isPressed, setIsPressed] = useState(Array().fill(false));
-    const [hasAudio, setHasAudio] = useState(UserInfo.audioChoice)
+    const [hasAudio, setHasAudio] = useState(user.audioChoice)
 
     const handlePressIn = (index: number) => {
       setIsPressed(prev => {
@@ -117,7 +117,7 @@ export default function SettingsScreen() {
             <Text style={styles.characterName}>Ryu</Text>
           </View>
 
-          {(UserInfo.Wins > 2) ? (
+          {(user.wins > 2) ? (
             <View style={[styles.characterImgContainer, isPressed[6] && styles.buttonPressed]}>
             <Pressable
             onPressIn={() => handlePressIn(6)}
@@ -131,7 +131,7 @@ export default function SettingsScreen() {
             <LockedCharacter howToUnlock='Win 3 fights'/>
           )}          
 
-          {(UserInfo.KO > 0) ? (
+          {(user.ko > 0) ? (
             <View style={[styles.characterImgContainer, isPressed[7] && styles.buttonPressed]}>
             <Pressable
             onPressIn={() => handlePressIn(7)}
@@ -145,7 +145,7 @@ export default function SettingsScreen() {
               <LockedCharacter howToUnlock='Complete a K.O'/>
           )}
           
-          {(UserInfo.Wins >= 10 && UserInfo.Wins > UserInfo.Losses) ? (
+          {(user.wins >= 10 && user.wins > user.losses) ? (
             <View style={[styles.characterImgContainer, isPressed[8] && styles.buttonPressed]}>
             <Pressable
             onPressIn={() => handlePressIn(8)}
@@ -195,7 +195,7 @@ export default function SettingsScreen() {
 
   const styles = StyleSheet.create({
     container: {
-      backgroundColor: UserInfo.primaryColor,
+      backgroundColor: user.primaryColor,
       flex: 1,
       //alignItems: 'center',
       paddingTop: 50,
@@ -206,7 +206,7 @@ export default function SettingsScreen() {
       alignSelf: 'center',
       fontSize: 30,
       fontFamily: 'ARCADECLASSIC',
-      color: UserInfo.secondaryColor
+      color: user.secondaryColor
     },
     displayImg: {
       width: 90,
@@ -220,7 +220,7 @@ export default function SettingsScreen() {
       marginTop: 75,
       fontSize: 25,
       fontFamily: 'ARCADECLASSIC',
-      color: UserInfo.secondaryColor
+      color: user.secondaryColor
     },
     themeContainer: {
       marginTop: 0,
@@ -245,7 +245,7 @@ export default function SettingsScreen() {
       marginTop: 30,
       fontSize: 25,
       fontFamily: 'ARCADECLASSIC',
-      color: UserInfo.secondaryColor
+      color: user.secondaryColor
     },
     characterContainer: {
       flexDirection: 'row',
@@ -270,7 +270,7 @@ export default function SettingsScreen() {
     },
     characterName: {
       marginTop: 7,
-      color: UserInfo.secondaryColor,
+      color: user.secondaryColor,
       fontFamily: 'ARCADECLASSIC',
       fontSize: 15
     },

@@ -1,4 +1,4 @@
-import UserInfo from "@/UserInfo";
+import user from "@/User";
 import { FontAwesome6 } from "@expo/vector-icons";
 import React, { useState } from "react";
 import { Pressable, StyleSheet, View, Text, Modal } from "react-native";
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
       },
       characterName: {
         marginTop: 7,
-        color: UserInfo.secondaryColor,
+        color: user.secondaryColor,
         fontFamily: 'ARCADECLASSIC',
         fontSize: 15
       },
