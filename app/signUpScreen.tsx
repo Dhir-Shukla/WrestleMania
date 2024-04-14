@@ -1,7 +1,7 @@
 import { FontAwesome6 } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import InvalidSignUpModal from '@/components/InvalidSignUpModal';
-import {View, StyleSheet, Text, TextInput, TouchableOpacity, Modal} from 'react-native';
+import {View, StyleSheet, Text, TextInput, TouchableOpacity, Modal, ActivityIndicator} from 'react-native';
 import { authService, db } from '@/backend/firebaseConfig';
 import { doc, setDoc } from 'firebase/firestore';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -15,8 +15,10 @@ const signUpScreen = () => {
     const[email, setEmail] = useState('');
     const[username, setUsername] = useState('');
     const[password, setPassword] = useState('');
-    const[shouldInvalidSignUpModalDisplay, setShouldInvalidSignUpModalDisplay] = useState(false);
-    const[shouldSuccessfulModalDisplay, setShouldSuccessfulModalDisplay] = useState(false);
+    const[shouldDisplayInvalidSignUpModal, setShouldDisplayInvalidSignUpModal] = useState(false);
+    const[shouldDisplaySuccessfulModal, setShouldDisplaySuccessfulModal] = useState(false);
+    const[shouldDisplayloadingIcon, setShouldDisplayLoadingIcon] = useState(false);
+    const[shouldDisplayCreateAccountBtn, setShouldDisplayCreateAccountBtn] = useState(true);
     const[errorTxt, setErrorTxt] = useState('');
     
     function backToLoginScreen(): void {
@@ -25,10 +27,15 @@ const signUpScreen = () => {
 
     function displayInvalidSignUpModal(errorTxt: string){
         setErrorTxt(errorTxt);
-        setShouldInvalidSignUpModalDisplay(true);
+        setShouldDisplayInvalidSignUpModal(true);
         setTimeout(() => {
-            setShouldInvalidSignUpModalDisplay(false);
+            setShouldDisplayInvalidSignUpModal(false);
         }, 3000);  
+    }
+
+    function displayLoadingIcon(){
+        setShouldDisplayLoadingIcon(true);
+        // TODO: Begin the animation for the icon
     }
 
     function handleCreateAccount(): void {
@@ -45,13 +52,18 @@ const signUpScreen = () => {
             displayInvalidSignUpModal('This username already exists')
         }  
         else{
+            setShouldDisplayLoadingIcon(true);
+            setShouldDisplayCreateAccountBtn(false);
             userService.createAccount(username, email, password)
                 .then((errorMsg) => {
+                    // Request completed and promise returned, so hide loading icon
+                    setShouldDisplayLoadingIcon(false);
                     if (errorMsg){
+                        setShouldDisplayCreateAccountBtn(true);
                         displayInvalidSignUpModal(errorMsg!);
                     }
                     else{
-                        setShouldSuccessfulModalDisplay(true);
+                        setShouldDisplaySuccessfulModal(true);
                     }
                 })
         }  
@@ -83,11 +95,18 @@ const signUpScreen = () => {
                 />
             </View>
 
-            <TouchableOpacity 
-            style={styles.createAccountBtn}
-            onPress={() => handleCreateAccount()}>
-                <Text style={styles.createAccountBtnTxt}>Create Account</Text>
-            </TouchableOpacity>
+            {shouldDisplayCreateAccountBtn &&     
+                <TouchableOpacity 
+                style={styles.createAccountBtn}
+                onPress={() => handleCreateAccount()}>
+                    <Text style={styles.createAccountBtnTxt}>Create Account</Text>
+                </TouchableOpacity>
+            }    
+
+            {shouldDisplayloadingIcon && 
+                <ActivityIndicator style={styles.loadingIcon} size={"large"} color={"#64c564"}/>
+            }   
+
             <TouchableOpacity 
             style={styles.backToLoginBtn}
             onPress={() => backToLoginScreen()}>
@@ -97,13 +116,13 @@ const signUpScreen = () => {
                 </Text>
             </TouchableOpacity>
 
-            {shouldInvalidSignUpModalDisplay && 
+            {shouldDisplayInvalidSignUpModal && 
                 <InvalidSignUpModal errorTxt={errorTxt}/>
             }
 
-            {shouldSuccessfulModalDisplay && 
+            {shouldDisplaySuccessfulModal && 
                 <SuccessfulSignUpModal username={username} email={email} password={password}/>
-            }   
+            }
 
         </View>
     )
@@ -153,6 +172,9 @@ const styles = StyleSheet.create({
     createAccountBtnTxt: {
         fontFamily: 'Organo', 
         color: 'white'
+    },
+    loadingIcon: {
+        marginTop: 44
     },
     backToLoginBtn: {
         marginTop: 70,
