@@ -1,7 +1,6 @@
 import IUserService from "./IUserService";
 import { authService, db } from '@/backend/firebaseConfig';
-import { FirebaseError } from "firebase/app";
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 
 export class UserService implements IUserService{
@@ -10,8 +9,8 @@ export class UserService implements IUserService{
         try {
             // Create account in firebase authentication
             const userCredentials = await createUserWithEmailAndPassword(authService, email, password);
-            const user = userCredentials.user;
-    
+            //TODO: See if userCredentials.user can come in handy
+
             // Create user with their info in firestore db
             await setDoc(doc(db, "users", username), {
                 username: username,
@@ -37,6 +36,21 @@ export class UserService implements IUserService{
                 default:
                     return 'Error ' + error.code + ' : ' + error.message;
             }
+        }
+    }
+
+    async signIn(email: string, password: string): Promise<string | undefined> {
+        try {
+            // Sign into firebase authentication
+            await signInWithEmailAndPassword(authService, email, password);
+            // Successful sign in
+            // TODO: Update the user instance. Call all properties from the database and populate the user accordingly
+            return undefined;
+        }
+        catch (error: any) {
+            // TODO: Handle sign in errors
+            console.warn(error.code, ':-', error.message);
+            return error.message
         }
     }
     
