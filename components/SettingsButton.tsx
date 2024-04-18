@@ -1,4 +1,4 @@
-import user from "@/User";
+import { user } from '@/config';
 import { FontAwesome6 } from "@expo/vector-icons";
 import { View } from "react-native";
 

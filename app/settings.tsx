@@ -1,4 +1,4 @@
-import user from '@/User';
+import {user} from '@/config';
 import LockedCharacter from '@/components/LockedCharacter';
 import { FontAwesome6 } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';

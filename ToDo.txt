@@ -1,6 +1,7 @@
 Things to do:
 
 Sign Up authentication:
+    When user clicks login after signup is done, background color of login btn should change to indicate async operation
     Verify that username does not already exist in database
     Catch the error where an email already exists
     View other errors from firebase documentation to see if any other ones are requried.
@@ -28,3 +29,6 @@ Leaderboard
 
 Firebase Security
     Create security rules for firebase using condition
+
+
+Include tutorial for how to play

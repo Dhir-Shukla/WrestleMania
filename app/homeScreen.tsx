@@ -1,5 +1,5 @@
 
-import user from '@/User'
+import { user } from '@/config';
 import FightClubButton from '@/components/FightClubButton';
 import FriendsButton from '@/components/FriendsButton';
 import SettingsButton from '@/components/SettingsButton';

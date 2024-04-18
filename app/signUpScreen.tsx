@@ -2,16 +2,11 @@ import { FontAwesome6 } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import InvalidSignUpModal from '@/components/InvalidSignUpModal';
 import {View, StyleSheet, Text, TextInput, TouchableOpacity, Modal, ActivityIndicator} from 'react-native';
-import { authService, db } from '@/backend/firebaseConfig';
-import { doc, setDoc } from 'firebase/firestore';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { useState } from 'react';
 import SuccessfulSignUpModal from '@/components/SuccessfulSignUpModal';
-import user from '@/User';
-import { UserService } from '@/backend/services/UserService';
+import {user, userService} from '@/config';
 
 const signUpScreen = () => {
-    const userService = new UserService();
     const[email, setEmail] = useState('');
     const[username, setUsername] = useState('');
     const[password, setPassword] = useState('');
@@ -35,7 +30,6 @@ const signUpScreen = () => {
 
     function displayLoadingIcon(){
         setShouldDisplayLoadingIcon(true);
-        // TODO: Begin the animation for the icon
     }
 
     function handleCreateAccount(): void {
