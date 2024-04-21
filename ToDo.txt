@@ -1,22 +1,24 @@
 Things to do:
 
 Sign Up authentication:
-    When user clicks login after signup is done, background color of login btn should change to indicate async operation
     Verify that username does not already exist in database
     Catch the error where an email already exists
     View other errors from firebase documentation to see if any other ones are requried.
 
 Login authentication:
-    Automatically set the authentication credentials once the user signs up
-    Create the login authentication in UserService
+    handle failed signIn in UserService
     Implement a way to ensure user stays logged in when app reloads
 
 Login screen UI fix
     Prevent users from swiping right and exiting the login screen
     Adjust the input keyboard by making it scroll or something of that sort
 
+SignUp screen UI fix
+    Prevent users from rotating screen
+    Adjust UI to handle keyboard covering password when typing password
+
 Animation on index.tsx
-    index screen should have animation for the "D-MOBB Gaming" text
+    index screen should have animation for the "Music by D-MOBB" text
     
 Audio
     Add audio which plays in the background
