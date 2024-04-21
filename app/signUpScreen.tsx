@@ -1,10 +1,11 @@
 import { FontAwesome6 } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import InvalidCredentialsModal from '@/components/InvalidCredentialsModal';
-import {View, StyleSheet, Text, TextInput, TouchableOpacity, Modal, ActivityIndicator} from 'react-native';
+import {View, StyleSheet, Text, TextInput, TouchableOpacity, ActivityIndicator} from 'react-native';
 import { useState } from 'react';
 import SuccessfulSignUpModal from '@/components/SuccessfulSignUpModal';
 import {user, userService} from '@/config';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const signUpScreen = () => {
     const[email, setEmail] = useState('');
@@ -60,7 +61,7 @@ const signUpScreen = () => {
     }
 
     return (
-        <View style = {[styles.container, {backgroundColor: user.primaryColor}]}>
+        <KeyboardAwareScrollView contentContainerStyle = {[styles.container, {backgroundColor: user.primaryColor}]}>
             <Text style={styles.titleTxt}>Sign Up</Text>
             <View style={styles.inputContainer}>
                 <Text style={styles.inputTitleTxt}>Email:</Text>
@@ -114,7 +115,7 @@ const signUpScreen = () => {
                 <SuccessfulSignUpModal username={username} email={email} password={password}/>
             }
 
-        </View>
+        </KeyboardAwareScrollView>
     )
 }
 

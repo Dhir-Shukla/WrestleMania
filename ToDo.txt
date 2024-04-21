@@ -15,7 +15,6 @@ Login screen UI fix
 
 SignUp screen UI fix
     Prevent users from rotating screen
-    Adjust UI to handle keyboard covering password when typing password
 
 Animation on index.tsx
     index screen should have animation for the "Music by D-MOBB" text
