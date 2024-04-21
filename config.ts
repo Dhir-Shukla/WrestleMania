@@ -5,7 +5,7 @@ import UserInfo from "./models/UserInfo";
 
 export const userService = new UserService();
 
-export let user: UserInfo = new UserInfo(
+const initialUser: UserInfo = new UserInfo(
     '',
     '',
     '',
@@ -18,4 +18,6 @@ export let user: UserInfo = new UserInfo(
     0,
     0
 );
+
+export let user = initialUser;
 
