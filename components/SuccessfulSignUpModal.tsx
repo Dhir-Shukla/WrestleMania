@@ -23,7 +23,7 @@ export default function SuccessfulSignUpModal(props: SuccessfulSignUpModalProps)
                 SetHasLoginFailed(true);
             }
             else{
-                router.navigate('homeScreen');
+                router.replace('/homeScreen');
             }
         })
     }

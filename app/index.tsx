@@ -47,7 +47,7 @@ const index = () => {
     }, []);
 
     function nextScreen() {
-        router.navigate('loginScreen')                        // TODO: Modify this to take the user to a screen based on their login status
+        router.replace('/loginScreen')                        // TODO: Modify this to take the user to a screen based on their login status
     }
 
     return (
