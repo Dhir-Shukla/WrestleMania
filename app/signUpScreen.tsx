@@ -30,34 +30,20 @@ const signUpScreen = () => {
     }
 
     function handleCreateAccount(): void {
-        if (email.length == 0){
-            displayInvalidCredentialsModal('Please enter an email');  
-        }
-        else if (username.length < 3){
-            displayInvalidCredentialsModal('Username must be at least 3 characters long');
-        }
-        else if (password.length < 6){
-            displayInvalidCredentialsModal('Password must be at least 6 characters long');
-        }
-        else if (false){                                                      // TODO: Create case where username already exists in database
-            displayInvalidCredentialsModal('This username already exists')
-        }  
-        else{
-            setShouldDisplayLoadingIcon(true);
-            setShouldDisplayCreateAccountBtn(false);
-            userService.createAccount(username, email, password)
-                .then((errorMsg) => {
-                    // Request completed and promise returned, so hide loading icon
-                    setShouldDisplayLoadingIcon(false);
-                    if (errorMsg){
-                        setShouldDisplayCreateAccountBtn(true);
-                        displayInvalidCredentialsModal(errorMsg!);   // TODO: Remove !
-                    }
-                    else{
-                        setShouldDisplaySuccessfulModal(true);
-                    }
-                })
-        }  
+        setShouldDisplayLoadingIcon(true);
+        setShouldDisplayCreateAccountBtn(false);
+        userService.createAccount(username, email, password)
+            .then((errorMsg) => {
+                // Request completed and promise returned, so hide loading icon
+                setShouldDisplayLoadingIcon(false);
+                if (errorMsg){
+                    setShouldDisplayCreateAccountBtn(true);
+                    displayInvalidCredentialsModal(errorMsg);
+                }
+                else{
+                    setShouldDisplaySuccessfulModal(true);
+                }
+            }) 
     }
 
     return (
