@@ -15,7 +15,6 @@ export default function SuccessfulSignUpModal(props: SuccessfulSignUpModalProps)
     const [hasLoginFailed, SetHasLoginFailed] = useState(false);
     
     function loginBtnPressed() {
-        // Log into firebase account using credentials
         userService.signIn(props.email, props.password)
         .then((errorMsg: any) => {
             // If successful then promise returns undefined errorMsg

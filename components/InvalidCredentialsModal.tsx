@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from "react";
 import { Animated, Easing, StyleSheet, Text} from "react-native";
 
-type InvalidSignUpModalProps = {
+type InvalidCredentialsModalProps = {
     errorTxt: string
 };
 
-const InvalidSignUpModal = (props: InvalidSignUpModalProps) => {
+const InvalidCredentialsModal = (props: InvalidCredentialsModalProps) => {
     const posAnim = useRef(new Animated.Value(0)).current;
 
     function moveLeft(movedCount: number){
@@ -66,7 +66,7 @@ const InvalidSignUpModal = (props: InvalidSignUpModalProps) => {
     )
 }
 
-export default InvalidSignUpModal;
+export default InvalidCredentialsModal;
 
 const styles = StyleSheet.create({
     container: {

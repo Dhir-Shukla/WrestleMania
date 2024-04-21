@@ -1,16 +1,19 @@
 import { Stack, router } from 'expo-router';
 import { useState, useMemo } from 'react';
 import { View, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native'
-import { user } from '@/config';
+import { user, userService } from '@/config';
+import InvalidCredentialsModal from '@/components/InvalidCredentialsModal';
 
 export default function loginScreen() {
-    const[username, setUsername] = useState('');
+    const[email, setEmail] = useState('');
     const[password, setPassword] = useState('');
+    const[shouldDisplayInvalidCredentialsModal, setShouldDisplayInvalidCredentialsModal] = useState(false);
+    const[errorTxt, setErrorTxt] = useState('');
 
     user.primaryColor = useMemo(getScreenColor, []);
 
     function getScreenColor(): string {
-        var colorList: string[] = ['#fa7a70', '#ebd5f7', '#e1f7d5', '#a9d3f7', '#a566e0'];     // TODO: Set this to retrieve all colors from a Model
+        var colorList: string[] = ['#fa7a70', '#ebd5f7', '#e1f7d5', '#a9d3f7', '#a566e0'];     // TODO: Filter list, and set this to retrieve all colors from a Model
         const hashedIndex = Math.floor(Math.random() * colorList.length)
         return colorList[hashedIndex];
     }
@@ -20,7 +23,25 @@ export default function loginScreen() {
     }
 
     function handleLogin(): void {
-        throw new Error('Function not implemented.');
+        // Log into firebase account using credentials
+        userService.signIn(email, password)
+        .then((errorMsg: any) => {
+            // If successful then promise returns undefined errorMsg
+            if (errorMsg){
+                displayInvalidCredentialsModal(errorMsg);
+            }
+            else{
+                router.replace('/homeScreen');
+            }
+        })
+    }
+
+    function displayInvalidCredentialsModal(errorTxt: string){
+        setErrorTxt(errorTxt);
+        setShouldDisplayInvalidCredentialsModal(true);
+        setTimeout(() => {
+            setShouldDisplayInvalidCredentialsModal(false);
+        }, 3000);
     }
 
     return (
@@ -30,7 +51,7 @@ export default function loginScreen() {
                 <Text style={styles.inputTitleTxt}>Email:</Text>
                 <TextInput
                     style={styles.inputBox}
-                    onChangeText={(text) => setUsername(text)}
+                    onChangeText={(text) => setEmail(text)}
                 />
             </View>
             <View style={styles.inputContainer}>
@@ -53,6 +74,10 @@ export default function loginScreen() {
                     Sign up
                 </Text>
             </TouchableOpacity>
+
+            {shouldDisplayInvalidCredentialsModal && 
+                <InvalidCredentialsModal errorTxt={errorTxt}/>
+            }
         </View>
     )
 }

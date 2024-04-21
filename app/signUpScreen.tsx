@@ -1,6 +1,6 @@
 import { FontAwesome6 } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import InvalidSignUpModal from '@/components/InvalidSignUpModal';
+import InvalidCredentialsModal from '@/components/InvalidCredentialsModal';
 import {View, StyleSheet, Text, TextInput, TouchableOpacity, Modal, ActivityIndicator} from 'react-native';
 import { useState } from 'react';
 import SuccessfulSignUpModal from '@/components/SuccessfulSignUpModal';
@@ -10,7 +10,7 @@ const signUpScreen = () => {
     const[email, setEmail] = useState('');
     const[username, setUsername] = useState('');
     const[password, setPassword] = useState('');
-    const[shouldDisplayInvalidSignUpModal, setShouldDisplayInvalidSignUpModal] = useState(false);
+    const[shouldDisplayInvalidCredentialsModal, setShouldDisplayInvalidCredentialsModal] = useState(false);
     const[shouldDisplaySuccessfulModal, setShouldDisplaySuccessfulModal] = useState(false);
     const[shouldDisplayloadingIcon, setShouldDisplayLoadingIcon] = useState(false);
     const[shouldDisplayCreateAccountBtn, setShouldDisplayCreateAccountBtn] = useState(true);
@@ -20,30 +20,26 @@ const signUpScreen = () => {
         router.back();
     }
 
-    function displayInvalidSignUpModal(errorTxt: string){
+    function displayInvalidCredentialsModal(errorTxt: string){
         setErrorTxt(errorTxt);
-        setShouldDisplayInvalidSignUpModal(true);
+        setShouldDisplayInvalidCredentialsModal(true);
         setTimeout(() => {
-            setShouldDisplayInvalidSignUpModal(false);
+            setShouldDisplayInvalidCredentialsModal(false);
         }, 3000);  
-    }
-
-    function displayLoadingIcon(){
-        setShouldDisplayLoadingIcon(true);
     }
 
     function handleCreateAccount(): void {
         if (email.length == 0){
-            displayInvalidSignUpModal('Please enter an email');  
+            displayInvalidCredentialsModal('Please enter an email');  
         }
         else if (username.length < 3){
-            displayInvalidSignUpModal('Username must be at least 3 characters long');
+            displayInvalidCredentialsModal('Username must be at least 3 characters long');
         }
         else if (password.length < 6){
-            displayInvalidSignUpModal('Password must be at least 6 characters long');
+            displayInvalidCredentialsModal('Password must be at least 6 characters long');
         }
         else if (false){                                                      // TODO: Create case where username already exists in database
-            displayInvalidSignUpModal('This username already exists')
+            displayInvalidCredentialsModal('This username already exists')
         }  
         else{
             setShouldDisplayLoadingIcon(true);
@@ -54,7 +50,7 @@ const signUpScreen = () => {
                     setShouldDisplayLoadingIcon(false);
                     if (errorMsg){
                         setShouldDisplayCreateAccountBtn(true);
-                        displayInvalidSignUpModal(errorMsg!);
+                        displayInvalidCredentialsModal(errorMsg!);   // TODO: Remove !
                     }
                     else{
                         setShouldDisplaySuccessfulModal(true);
@@ -110,8 +106,8 @@ const signUpScreen = () => {
                 </Text>
             </TouchableOpacity>
 
-            {shouldDisplayInvalidSignUpModal && 
-                <InvalidSignUpModal errorTxt={errorTxt}/>
+            {shouldDisplayInvalidCredentialsModal && 
+                <InvalidCredentialsModal errorTxt={errorTxt}/>
             }
 
             {shouldDisplaySuccessfulModal && 
