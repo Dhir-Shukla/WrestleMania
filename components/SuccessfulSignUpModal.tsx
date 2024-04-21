@@ -1,4 +1,6 @@
-import React from "react";
+import {userService} from '@/config';
+import { router } from 'expo-router';
+import React, { useState } from "react";
 
 import {View, Modal, StyleSheet, Text, TouchableOpacity} from "react-native";
 
@@ -9,10 +11,25 @@ type SuccessfulSignUpModalProps = {
 };
 
 export default function SuccessfulSignUpModal(props: SuccessfulSignUpModalProps) {
+
+    const [hasLoginFailed, SetHasLoginFailed] = useState(false);
     
     function loginBtnPressed() {
         // Log into firebase account using credentials
-        // If successful, navigate router
+        userService.signIn(props.email, props.password)
+        .then((errorMsg: any) => {
+            // If successful then promise returns undefined errorMsg
+            if (errorMsg){
+                SetHasLoginFailed(true);
+            }
+            else{
+                router.navigate('homeScreen');
+            }
+        })
+    }
+
+    function returnBtnPressed() {
+        router.back();
     }
 
     return (
@@ -20,16 +37,29 @@ export default function SuccessfulSignUpModal(props: SuccessfulSignUpModalProps)
                 transparent={true}
                 visible={true}
                 >
-                <View style={styles.container}>
-                    <Text style={styles.titleTxt}>Congrats {props.username}!</Text>
-                    <Text style={styles.subTxt}>Your account has been created with email:</Text>
-                    <Text style={styles.emailTxt}>{props.email}</Text>
-                    <TouchableOpacity 
-                        style={styles.loginBtn}
-                        onPress={loginBtnPressed}>
-                        <Text style={styles.loginTxt}>Login</Text>
-                    </TouchableOpacity>
-                </View>
+                {!hasLoginFailed ? (
+                    <View style={[styles.container, {backgroundColor: '#64c564'}]}>
+                        <Text style={styles.titleTxt}>Congrats {props.username}!</Text>
+                        <Text style={styles.subTxt}>Your account has been created with email:</Text>
+                        <Text style={styles.emailTxt}>{props.email}</Text>
+                        <TouchableOpacity 
+                            style={[styles.loginBtn, {backgroundColor: '#4bb81c'}]}
+                            onPress={loginBtnPressed}>
+                            <Text style={styles.loginTxt}>Login</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                ): (
+                    <View style={[styles.container, {backgroundColor: '#f76f6c'}]}> 
+                        <Text style={styles.titleTxt}>Login Failed {':('}</Text>
+                        <Text style={styles.subTxt}>Login failed for some unforseen reason.</Text>
+                        <TouchableOpacity 
+                            style={[styles.loginBtn, {backgroundColor: '#fa5e5b'}]}
+                            onPress={returnBtnPressed}>
+                            <Text style={styles.loginTxt}>Return to login</Text>
+                        </TouchableOpacity>
+                    </View>
+                )}                
             </Modal>
     )
 }
@@ -37,7 +67,6 @@ export default function SuccessfulSignUpModal(props: SuccessfulSignUpModalProps)
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#64c564',
         marginTop: '67%',
         marginBottom: '60%',
         marginHorizontal: '10%',
@@ -72,7 +101,6 @@ const styles = StyleSheet.create({
         width: '70%',
         height: 30,
         borderRadius: 10,
-        backgroundColor: '#4bb81c',
         alignItems: 'center',
         justifyContent: 'center',
         shadowOpacity: 0.5,
