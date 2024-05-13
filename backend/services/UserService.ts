@@ -1,7 +1,8 @@
 import IUserService from "./IUserService";
 import { authService, db } from '@/backend/firebaseConfig';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { user } from "@/config";
 
 export class UserService implements IUserService{
 
@@ -64,8 +65,18 @@ export class UserService implements IUserService{
             // Sign into firebase authentication
             await signInWithEmailAndPassword(authService, email, password);
             // Successful sign in
-            // TODO: Update the user instance. Call all properties from the database and populate the user accordingly
-            return undefined;
+            // Retrieve all properties from db and udpate the user instance accordingly
+            const userDocSnapshot = await getDoc(doc(db, "users", email));
+            const userDocData = userDocSnapshot.data()
+            const username: string = userDocData!.username;
+            const characterChoice: number = userDocData!.characterChoice;
+            const themeChoice: string = userDocData!.themeChoice;
+            const audioChoice: boolean = userDocData!.audioChoice;
+            const wins: number = userDocData!.wins;
+            const losses: number = userDocData!.losses;
+            const ko: number = userDocData!.ko;
+            user.setAllProps(username, email, password, characterChoice, themeChoice, audioChoice, wins, losses, ko);
+            return;
         }
         catch (error: any) {
             // TODO: Handle sign in errors

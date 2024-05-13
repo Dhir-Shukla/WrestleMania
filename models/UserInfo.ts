@@ -3,13 +3,13 @@ export default class UserInfo {
     email: string
     password: string
 
-    primaryColor!: string            // TODO: Remove these and create a function/service that
-    secondaryColor!: string                // sets these according to themeChoice prop below
-    thirdColor!: string
-
     characterChoice: number
     themeChoice: string
     audioChoice: boolean
+
+    primaryColor!: string            // TODO: Remove these and create a function/service that
+    secondaryColor!: string                // sets these according to themeChoice prop below
+    thirdColor!: string
 
     wins: number
     losses: number
@@ -19,13 +19,10 @@ export default class UserInfo {
         this.username = username;
         this.email = email;
         this.password = password;
-
-        this.setColors(themeChoice);
-
         this.characterChoice = characterChoice
         this.themeChoice = themeChoice
         this.audioChoice = audioChoice
-
+        this.setColors(themeChoice);
         this.wins = wins
         this.losses = losses
         this.ko = ko
@@ -43,4 +40,18 @@ export default class UserInfo {
             this.thirdColor = '#f76f6c'
         }
     }
+
+    setAllProps(username: string, email: string, password: string, characterChoice: number,
+        themeChoice: string, audioChoice: boolean, wins: number, losses: number, ko: number){
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.characterChoice = characterChoice
+        this.themeChoice = themeChoice
+        this.audioChoice = audioChoice
+        this.setColors(themeChoice);
+        this.wins = wins
+        this.losses = losses
+        this.ko = ko
+        }
 }
