@@ -32,15 +32,11 @@ export class UserService implements IUserService{
                 //TODO: See if userCredentials.user can come in handy
 
                 // Create user with their info in firestore db
-                await setDoc(doc(db, "users", username), {
-                    username: username,
-                    password: password,
-                    email: email,
-                    color: '#fa7a70',
-                    wins: 0,
-                    loss: 0,
-                    ko: 0
-                });
+                let initialUser = user.getAllProps()
+                initialUser.username = username;
+                initialUser.email = email;
+                initialUser.password = password;
+                await setDoc(doc(db, "users", email), initialUser);
         
                 // If everything succeeds, return undefined (no error)
                 return;

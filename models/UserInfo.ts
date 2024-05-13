@@ -54,4 +54,18 @@ export default class UserInfo {
         this.losses = losses
         this.ko = ko
         }
+    
+    getAllProps() {
+        return {
+            username: this.username,
+            email: this.email,
+            password: this.password,
+            characterChoice: this.characterChoice,
+            themeChoice: this.themeChoice,
+            audioChoice: this.audioChoice,
+            wins: this.wins,
+            losses: this.losses,
+            ko: this.ko,
+        }
+    }
 }
